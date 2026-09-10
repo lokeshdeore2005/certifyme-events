@@ -1,0 +1,89 @@
+/* ==========================================================
+   registration.css  -->  STYLES ONLY FOR registration.html
+   ========================================================== */
+
+.form-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 30px 20px 60px;
+}
+
+.form-box {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 520px;
+}
+
+/* the auto filled event name shown on top of the form */
+.selected-event {
+    background-color: #eaf4fc;
+    color: #2C3E50;
+    border-left: 4px solid #3498DB;
+    padding: 12px 15px;
+    border-radius: 5px;
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+.selected-event span {
+    font-weight: bold;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: #2C3E50;
+    font-weight: bold;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px;
+    font-family: Arial, sans-serif;
+    outline: none;
+}
+
+input:focus, select:focus {
+    border-color: #3498DB;
+}
+
+input[readonly] {
+    background-color: #f0f0f0;
+    color: #555;
+}
+
+/* validation message under a field */
+.error {
+    display: block;
+    color: #E74C3C;
+    font-size: 13px;
+    min-height: 16px;
+    margin-top: 4px;
+}
+
+/* success message */
+.success-msg {
+    display: none;
+    background-color: #e8f8f0;
+    color: #1E8449;
+    border-left: 4px solid #1E8449;
+    padding: 12px 15px;
+    border-radius: 5px;
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+.form-actions {
+    margin-top: 25px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate | Smart Event Portal</title>
+    <meta name="description" content="Certificate of participation template preview for RCPIT Shirpur events.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/certificate.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+        <div class="logo">🎓 Event Portal</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="events.html">Events</a>
+            <a href="certificate.html" class="active">Certificate</a>
+            <a href="login.html">Login</a>
+        </div>
+    </nav>
+
+    <!-- PAGE HEADING -->
+    <div class="page-title">
+        <h2>Certificate Preview</h2>
+        <p>This is the certificate template. Real generation will be added later.</p>
+    </div>
+
+    <!-- message shown by the demo buttons -->
+    <div class="cert-msg-wrapper">
+        <div id="certMsg" class="cert-msg"></div>
+    </div>
+
+    <!-- CERTIFICATE TEMPLATE -->
+    <div class="certificate-wrapper">
+        <div class="certificate" id="certificate">
+            <div class="cert-inner-border">
+
+                <!-- college logo placeholder + college name -->
+                <div class="cert-logo">🎓</div>
+                <h3 class="college-name">R. C. Patel Institute of Technology, Shirpur</h3>
+                <p class="college-sub">Department of Information Technology</p>
+
+                <h1 class="cert-heading">CERTIFICATE OF PARTICIPATION</h1>
+                <div class="cert-line"></div>
+
+                <p class="cert-text">This is to certify that</p>
+                <h2 class="student-name">[Student Name]</h2>
+
+                <p class="cert-text">
+                    has actively participated in the event
+                    <span class="event-name">[Event Name]</span>
+                    held on <span class="event-date">[Event Date]</span>
+                    at RCPIT Shirpur.
+                </p>
+
+                <p class="cert-text small">
+                    We appreciate the enthusiasm and dedication shown during the event
+                    and wish continued success in all future endeavours.
+                </p>
+
+                <!-- SIGNATURES -->
+                <div class="signatures">
+                    <div class="sign-box">
+                        <div class="sign-line"></div>
+                        <p>Organizer / Coordinator</p>
+                    </div>
+                    <div class="sign-box">
+                        <div class="sign-line"></div>
+                        <p>Principal / Authorized Signatory</p>
+                    </div>
+                </div>
+
+                <!-- CERTIFICATE ID + QR PLACEHOLDER -->
+                <div class="cert-footer">
+                    <div class="cert-id">Certificate ID: <span>RCPIT/2026/EVT/0001</span></div>
+                    <div class="qr-placeholder">
+                        <span>QR</span>
+                        <small>Scan to verify</small>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="cert-actions">
+        <button class="btn-primary" id="downloadBtn">Download Certificate</button>
+        <button class="btn-light" id="verifyBtn">Verify Certificate</button>
+        <a href="index.html" class="btn-light">Back to Home</a>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2026 Smart Event Portal | RCPIT Shirpur</p>
+    </footer>
+
+    <script src="js/certificate.js"></script>
+</body>
+</html>

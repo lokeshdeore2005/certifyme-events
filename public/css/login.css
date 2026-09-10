@@ -1,0 +1,149 @@
+/* ==========================================================
+   login.css  -->  STYLES ONLY FOR login.html
+   ========================================================== */
+
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 30px 20px 60px;
+}
+
+.login-box {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 430px;
+}
+
+/* TABS */
+.tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    flex: 1;
+    background-color: #f0f0f0;
+    color: #2C3E50;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.tab-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.tab-btn.active {
+    background-color: #2C3E50;
+    color: white;
+}
+
+/* FORMS */
+.login-form label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: #2C3E50;
+    font-weight: bold;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px;
+    outline: none;
+}
+
+.login-form input:focus {
+    border-color: #3498DB;
+}
+
+.full-width {
+    width: 100%;
+    margin-top: 22px;
+}
+
+.form-heading {
+    color: #2C3E50;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.small-text {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #777;
+    text-align: center;
+}
+
+.small-text a {
+    color: #3498DB;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.small-text a:hover {
+    text-decoration: underline;
+}
+
+/* MESSAGE BOX (errors and demo success) */
+.login-msg {
+    display: none;
+    padding: 12px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.login-msg.error {
+    display: block;
+    background-color: #fdecea;
+    color: #C0392B;
+    border-left: 4px solid #C0392B;
+}
+
+.login-msg.success {
+    display: block;
+    background-color: #e8f8f0;
+    color: #1E8449;
+    border-left: 4px solid #1E8449;
+}
+
+/* DEMO DASHBOARD */
+.dashboard {
+    text-align: center;
+    padding: 10px 0;
+}
+
+.dashboard h3 {
+    color: #2C3E50;
+    margin-bottom: 10px;
+}
+
+.dashboard p {
+    color: #555;
+    font-size: 15px;
+}
+
+.dashboard-links {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* helper class used by login.js to hide/show sections */
+.hidden {
+    display: none;
+}

@@ -1,0 +1,85 @@
+/* ==========================================================
+   events.css  -->  STYLES ONLY FOR events.html
+   (search bar, category buttons, bigger event grid)
+   ========================================================== */
+
+.filter-bar {
+    text-align: center;
+    padding: 10px 20px 0;
+}
+
+#searchBox {
+    width: 100%;
+    max-width: 400px;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px;
+    outline: none;
+}
+
+#searchBox:focus {
+    border-color: #3498DB;
+}
+
+.category-buttons {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.filter-btn {
+    background-color: white;
+    color: #2C3E50;
+    border: 1px solid #ccc;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.filter-btn:hover {
+    background-color: #eaeaea;
+}
+
+.filter-btn.active {
+    background-color: #3498DB;
+    color: white;
+    border-color: #3498DB;
+}
+
+/* event cards on this page are a little taller (they have a description) */
+.event-card {
+    width: 250px;
+    text-align: center;
+}
+
+.event-icon {
+    font-size: 34px;
+    margin-bottom: 10px;
+}
+
+.event-card .desc {
+    color: #555;
+    font-size: 13px;
+    margin: 10px 0;
+    min-height: 40px;
+}
+
+.event-tag {
+    display: inline-block;
+    background-color: #eaf4fc;
+    color: #3498DB;
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+}
+
+.no-result {
+    display: none;
+    color: #777;
+    margin-top: 20px;
+}

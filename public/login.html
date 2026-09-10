@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Signup | Smart Event Portal</title>
+    <meta name="description" content="Student and organizer login for the Smart Event Portal.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+        <div class="logo">🎓 Event Portal</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="events.html">Events</a>
+            <a href="certificate.html">Certificate</a>
+            <a href="login.html" class="active">Login</a>
+        </div>
+    </nav>
+
+    <!-- PAGE HEADING -->
+    <div class="page-title">
+        <h2>Login to Event Portal</h2>
+        <p>Students and organizers can log in from here.</p>
+    </div>
+
+    <div class="login-wrapper">
+        <div class="login-box">
+
+            <!-- TABS -->
+            <div class="tabs">
+                <button class="tab-btn active" id="tabStudent">Student Login</button>
+                <button class="tab-btn" id="tabAdmin">Organizer / Admin Login</button>
+            </div>
+
+            <!-- message area (demo login / errors) -->
+            <div id="loginMsg" class="login-msg"></div>
+
+            <!-- STUDENT LOGIN FORM -->
+            <form id="studentForm" class="login-form">
+                <label for="studentEmail">Email</label>
+                <input type="text" id="studentEmail" placeholder="student@gmail.com">
+
+                <label for="studentPassword">Password</label>
+                <input type="password" id="studentPassword" placeholder="Enter password">
+
+                <button type="submit" class="btn-primary full-width">Login</button>
+
+                <p class="small-text">
+                    Don't have an account?
+                    <a href="#" id="showSignup">Sign up</a>
+                </p>
+            </form>
+
+            <!-- ADMIN LOGIN FORM (hidden by default) -->
+            <form id="adminForm" class="login-form hidden">
+                <label for="adminEmail">Email</label>
+                <input type="text" id="adminEmail" placeholder="admin@rcpit.ac.in">
+
+                <label for="adminPassword">Password</label>
+                <input type="password" id="adminPassword" placeholder="Enter password">
+
+                <button type="submit" class="btn-primary full-width">Admin Login</button>
+            </form>
+
+            <!-- SIGNUP FORM (hidden by default) -->
+            <form id="signupForm" class="login-form hidden">
+                <h3 class="form-heading">Create a Student Account</h3>
+
+                <label for="signupName">Full Name</label>
+                <input type="text" id="signupName" placeholder="Enter your full name">
+
+                <label for="signupEmail">Email</label>
+                <input type="text" id="signupEmail" placeholder="example@gmail.com">
+
+                <label for="signupPassword">Password</label>
+                <input type="password" id="signupPassword" placeholder="Minimum 6 characters">
+
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" placeholder="Re-enter password">
+
+                <button type="submit" class="btn-primary full-width">Create Account</button>
+
+                <p class="small-text">
+                    Already registered?
+                    <a href="#" id="backToLogin">Back to Login</a>
+                </p>
+            </form>
+
+            <!-- DEMO DASHBOARD PLACEHOLDER (shown after a demo login) -->
+            <div id="dashboard" class="dashboard hidden">
+                <h3>Welcome to your Dashboard 👋</h3>
+                <p id="dashboardText">You are logged in (demo only).</p>
+                <p class="small-text">A real dashboard will be added in the next phase.</p>
+                <div class="dashboard-links">
+                    <a href="events.html" class="btn-primary">Browse Events</a>
+                    <a href="certificate.html" class="btn-light">My Certificate</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2026 Smart Event Portal | RCPIT Shirpur</p>
+    </footer>
+
+    <script src="js/login.js"></script>
+</body>
+</html>

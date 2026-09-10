@@ -1,24 +1,42 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect } from "react";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+// The whole project is a plain HTML/CSS/JS website living in the `public/` folder.
+// Opening "/" simply sends the visitor to public/index.html (the Home page).
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Smart Event Portal | RCPIT Shirpur" },
+      {
+        name: "description",
+        content:
+          "Smart Event Certificate Generator and Verification Portal for college events at RCPIT Shirpur.",
+      },
+      { property: "og:title", content: "Smart Event Portal | RCPIT Shirpur" },
+      {
+        property: "og:description",
+        content:
+          "Register for college events and get your participation certificate instantly.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+    links: [{ rel: "canonical", href: "/index.html" }],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
+  useEffect(() => {
+    window.location.replace("/index.html");
+  }, []);
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div style={{ fontFamily: "Arial, sans-serif", padding: "40px", textAlign: "center" }}>
+      <p>
+        Opening the Smart Event Portal… <a href="/index.html">Click here</a> if it does
+        not open automatically.
+      </p>
     </div>
   );
 }

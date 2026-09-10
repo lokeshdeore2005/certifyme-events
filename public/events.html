@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Events | Smart Event Portal</title>
+    <meta name="description" content="Browse and search all upcoming college events at RCPIT Shirpur.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/events.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+        <div class="logo">🎓 Event Portal</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="events.html" class="active">Events</a>
+            <a href="certificate.html">Certificate</a>
+            <a href="login.html">Login</a>
+        </div>
+    </nav>
+
+    <!-- PAGE HEADING -->
+    <div class="page-title">
+        <h2>All Events</h2>
+        <p>Search an event, choose a category and register in one click.</p>
+    </div>
+
+    <!-- SEARCH + CATEGORY FILTER -->
+    <div class="filter-bar">
+        <input type="text" id="searchBox" placeholder="Search Events...">
+
+        <div class="category-buttons">
+            <button class="filter-btn active" data-category="All">All</button>
+            <button class="filter-btn" data-category="Workshop">Workshop</button>
+            <button class="filter-btn" data-category="Seminar">Seminar</button>
+            <button class="filter-btn" data-category="Competition">Competition</button>
+            <button class="filter-btn" data-category="Technical">Technical</button>
+        </div>
+    </div>
+
+    <!-- EVENT CARDS ARE CREATED BY events.js -->
+    <div class="events">
+        <div class="card-container" id="eventList"></div>
+        <p id="noResult" class="no-result">No events found. Try another search.</p>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2026 Smart Event Portal | RCPIT Shirpur</p>
+    </footer>
+
+    <script src="js/events.js"></script>
+</body>
+</html>

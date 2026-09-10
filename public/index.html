@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Event Portal | Home</title>
-    <meta name="description" content="Smart Event Certificate Generator and Verification Portal - RCPIT Shirpur.">
-    <link rel="stylesheet" href="css/style.css">
+    <title>Smart Event Portal</title>
+    <link rel="stylesheet" href="css/design.css">
 </head>
 <body>
 
@@ -13,7 +12,7 @@
     <nav>
         <div class="logo">🎓 Event Portal</div>
         <div class="nav-links">
-            <a href="index.html" class="active">Home</a>
+            <a href="index.html">Home</a>
             <a href="events.html">Events</a>
             <a href="certificate.html">Certificate</a>
             <a href="login.html">Login</a>
@@ -24,10 +23,10 @@
     <div class="hero">
         <h1>Smart Event Certificate Generator</h1>
         <p>Register for events and get your certificate instantly!</p>
-        <a class="btn" href="events.html">Explore Events</a>
+        <button class="btn" onclick="location.href='events.html'">Explore Events</button>
     </div>
 
-    <!-- EVENTS SECTION (only 3 featured events on home page) -->
+    <!-- EVENTS SECTION -->
     <div class="events">
         <h2>Upcoming Events</h2>
         <div class="card-container">
@@ -36,29 +35,25 @@
                 <h3>🖥️ Tech Fest 2026</h3>
                 <p>Date: 15 Sep 2026</p>
                 <p>Venue: RCPIT Auditorium</p>
-                <!-- event name is passed to the registration page in the link -->
-                <a class="card-btn" href="registration.html?event=Tech%20Fest%202026">Register</a>
+                <button class="card-btn" onclick="location.href='registration.html?event=Tech%20Fest%202026'">Register</button>
             </div>
 
             <div class="card">
                 <h3>💻 Hackathon</h3>
                 <p>Date: 22 Sep 2026</p>
                 <p>Venue: IT Department</p>
-                <a class="card-btn" href="registration.html?event=Hackathon%202026">Register</a>
+                <button class="card-btn" onclick="location.href='registration.html?event=Hackathon%202026'">Register</button>
+
             </div>
 
             <div class="card">
                 <h3>🔧 Workshop</h3>
                 <p>Date: 30 Sep 2026</p>
                 <p>Venue: Computer Lab</p>
-                <a class="card-btn" href="registration.html?event=Web%20Development%20Workshop">Register</a>
+                <button class="card-btn" onclick="location.href='registration.html?event=Web%20Development%20Workshop'">Register</button>
             </div>
 
         </div>
-
-        <p style="margin-top:30px;">
-            <a class="btn-primary" href="events.html">View All Events</a>
-        </p>
     </div>
 
     <!-- FOOTER -->

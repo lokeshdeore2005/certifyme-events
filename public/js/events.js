@@ -71,7 +71,7 @@ function filterEvents() {
 }
 
 // 5) SEARCH BOX EVENT
-searchBox.addEventListener("keyup", filterEvents);
+searchBox.addEventListener("input", filterEvents);
 
 // 6) CATEGORY BUTTON CLICKS
 for (var b = 0; b < filterButtons.length; b++) {

@@ -200,3 +200,12 @@
         font-size: 22px;
     }
 }
+
+/* MY CERTIFICATE LIST + QR */
+.cert-list { max-width: 850px; width: 100%; margin-bottom: 15px; }
+.cert-list a { display: block; background: #fff; padding: 10px 14px; border-radius: 6px; margin-bottom: 8px; color: #1F2A44; text-decoration: none; box-shadow: 0 2px 6px rgba(0,0,0,.08); }
+.qr-box { text-align: center; font-size: 11px; }
+.qr-box img, .qr-box canvas { width: 90px; height: 90px; }
+@media print {
+  nav, footer, .page-title, .cert-actions, .cert-msg-wrapper { display: none !important; }
+}

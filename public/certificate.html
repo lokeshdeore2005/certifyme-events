@@ -24,7 +24,7 @@
     <!-- PAGE HEADING -->
     <div class="page-title">
         <h2>Certificate Preview</h2>
-        <p>This is the certificate template. Real generation will be added later.</p>
+        <p>Your issued certificates. Each one has a QR code that anyone can scan to verify it.</p>
     </div>
 
     <!-- message shown by the demo buttons -->
@@ -32,8 +32,11 @@
         <div id="certMsg" class="cert-msg"></div>
     </div>
 
+    <!-- LIST OF MY CERTIFICATES (filled by certificate.js) -->
+    <div class="cert-msg-wrapper"><div id="certList" class="cert-list"></div></div>
+
     <!-- CERTIFICATE TEMPLATE -->
-    <div class="certificate-wrapper">
+    <div class="certificate-wrapper hidden" id="certWrapper">
         <div class="certificate" id="certificate">
             <div class="cert-inner-border">
 
@@ -74,11 +77,8 @@
 
                 <!-- CERTIFICATE ID + QR PLACEHOLDER -->
                 <div class="cert-footer">
-                    <div class="cert-id">Certificate ID: <span>RCPIT/2026/EVT/0001</span></div>
-                    <div class="qr-placeholder">
-                        <span>QR</span>
-                        <small>Scan to verify</small>
-                    </div>
+                    <div class="cert-id">Certificate ID: <span id="certCode"></span></div>
+                    <div class="qr-box"><div id="qrcode"></div><small>Scan to verify</small></div>
                 </div>
 
             </div>
@@ -86,7 +86,7 @@
     </div>
 
     <!-- ACTION BUTTONS -->
-    <div class="cert-actions">
+    <div class="cert-actions hidden" id="certActions">
         <button class="btn-primary" id="downloadBtn">Download Certificate</button>
         <button class="btn-light" id="verifyBtn">Verify Certificate</button>
         <a href="index.html" class="btn-light">Back to Home</a>
@@ -97,6 +97,9 @@
         <p>© 2026 Smart Event Portal | RCPIT Shirpur</p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <script src="js/certificate.js"></script>
 </body>
 </html>

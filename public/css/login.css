@@ -147,3 +147,10 @@
 .hidden {
     display: none;
 }
+
+/* DASHBOARD LISTS */
+.dash-title { margin: 20px 0 8px; color: #1F2A44; text-align: left; }
+.dash-list { text-align: left; font-size: 14px; }
+.dash-item { background: #f4f6fb; border-radius: 6px; padding: 10px 12px; margin-bottom: 8px; }
+.dash-item button { margin-top: 6px; padding: 5px 10px; font-size: 13px; cursor: pointer; }
+.dashboard-links button { cursor: pointer; }

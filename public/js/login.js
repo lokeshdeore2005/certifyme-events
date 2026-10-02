@@ -7,16 +7,10 @@ var tabAdmin = document.getElementById("tabAdmin");
 var studentForm = document.getElementById("studentForm");
 var adminForm = document.getElementById("adminForm");
 var signupForm = document.getElementById("signupForm");
-var dashboard = document.getElementById("dashboard");
 var loginMsg = document.getElementById("loginMsg");
 
-function esc(s) {
-    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
-        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
-    });
-}
 function hideAllForms() {
-    [studentForm, adminForm, signupForm, dashboard].forEach(function (x) { x.classList.add("hidden"); });
+    [studentForm, adminForm, signupForm].forEach(function (x) { x.classList.add("hidden"); });
 }
 function showMessage(text, type) { loginMsg.textContent = text; loginMsg.className = "login-msg " + type; }
 function clearMessage() { loginMsg.textContent = ""; loginMsg.className = "login-msg"; }
@@ -90,79 +84,8 @@ signupForm.addEventListener("submit", async function (e) {
     }
 });
 
-// 5) DASHBOARD
-async function showDashboard(user) {
-    hideAllForms();
-    dashboard.classList.remove("hidden");
-    var staff = await isStaff(user.id);
-    document.getElementById("dashboardText").textContent =
-        "Logged in as " + (staff ? "Organizer / Admin" : "Student") + ": " + user.email;
+// 5) AFTER LOGIN -> go to the protected dashboard page
+function showDashboard() { window.location.href = "dashboard.html"; }
 
-    // my registrations
-    var mine = await sb.from("registrations").select("id, attended, events(name, event_date)").eq("user_id", user.id);
-    var box = document.getElementById("myRegs");
-    box.innerHTML = (mine.data || []).map(function (r) {
-        return '<div class="dash-item">' + esc(r.events && r.events.name) + " — " + esc(r.events && r.events.event_date) +
-            (r.attended ? " ✅ Attended" : "") + "</div>";
-    }).join("") || "<p>No registrations yet.</p>";
-
-    document.getElementById("staffArea").classList.toggle("hidden", !staff);
-    if (staff) loadAllRegistrations(user);
-}
-
-// organizer: list every registration with an "Issue Certificate" button
-async function loadAllRegistrations(user) {
-    var regs = await sb.from("registrations")
-        .select("id, user_id, event_id, full_name, roll_number, events(name, event_date), certificates(certificate_code)")
-        .order("created_at", { ascending: false });
-    var box = document.getElementById("allRegs");
-    box.innerHTML = (regs.data || []).map(function (r) {
-        var cert = r.certificates && (r.certificates.certificate_code || (r.certificates[0] && r.certificates[0].certificate_code));
-        return '<div class="dash-item"><b>' + esc(r.full_name) + "</b> (" + esc(r.roll_number) + ") — " + esc(r.events.name) +
-            "<br>" + (cert ? "Certificate: " + esc(cert)
-                : '<button data-id="' + r.id + '">Mark Attended &amp; Issue Certificate</button>') + "</div>";
-    }).join("") || "<p>No registrations yet.</p>";
-
-    box.querySelectorAll("button").forEach(function (btn) {
-        btn.addEventListener("click", async function () {
-            var r = regs.data.find(function (x) { return x.id === btn.getAttribute("data-id"); });
-            await sb.from("registrations").update({ attended: true }).eq("id", r.id);
-            var ins = await sb.from("certificates").insert({
-                registration_id: r.id, user_id: r.user_id, event_id: r.event_id,
-                student_name: r.full_name, event_name: r.events.name, event_date: r.events.event_date, issued_by: user.id
-            });
-            if (ins.error) return showMessage(ins.error.message, "error");
-            showMessage("Certificate issued to " + r.full_name, "success");
-            loadAllRegistrations(user);
-        });
-    });
-}
-
-// organizer: add event
-document.getElementById("eventForm").addEventListener("submit", async function (e) {
-    e.preventDefault();
-    var ev = {
-        name: document.getElementById("evName").value.trim(),
-        category: document.getElementById("evCategory").value,
-        event_date: document.getElementById("evDate").value,
-        venue: document.getElementById("evVenue").value.trim(),
-        icon: document.getElementById("evIcon").value.trim() || "📅",
-        description: document.getElementById("evDesc").value.trim()
-    };
-    if (!ev.name || !ev.event_date || !ev.venue) return showMessage("Event name, date and venue are required.", "error");
-    var u = (await sb.auth.getUser()).data.user;
-    ev.created_by = u.id;
-    var res = await sb.from("events").insert(ev);
-    if (res.error) return showMessage(res.error.message, "error");
-    showMessage("Event added!", "success");
-    e.target.reset();
-});
-
-// 6) LOGOUT
-document.getElementById("logoutBtn").addEventListener("click", async function () {
-    await sb.auth.signOut();
-    clearMessage(); hideAllForms(); studentForm.classList.remove("hidden");
-});
-
-// 7) ALREADY LOGGED IN? go straight to the dashboard
-sb.auth.getUser().then(function (r) { if (r.data.user) showDashboard(r.data.user); });
+// 6) ALREADY LOGGED IN? skip the login page
+sb.auth.getSession().then(function (r) { if (r.data.session) showDashboard(); });

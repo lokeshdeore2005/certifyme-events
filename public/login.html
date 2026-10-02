@@ -23,7 +23,7 @@
 
     <!-- PAGE HEADING -->
     <div class="page-title">
-        <h2>Login to Event Portal</h2>
+        <h2>Sign In / Sign Up</h2>
         <p>Students and organizers can log in from here.</p>
     </div>
 
@@ -90,51 +90,17 @@
                 </p>
             </form>
 
-            <!-- DASHBOARD (shown after a real login) -->
-            <div id="dashboard" class="dashboard hidden">
-                <h3>Welcome 👋</h3>
-                <p id="dashboardText"></p>
-
-                <!-- student part -->
-                <h4 class="dash-title">My Registrations</h4>
-                <div id="myRegs" class="dash-list"></div>
-
-                <!-- organizer part -->
-                <div id="staffArea" class="hidden">
-                    <h4 class="dash-title">Add New Event</h4>
-                    <form id="eventForm" class="login-form">
-                        <input type="text" id="evName" placeholder="Event name">
-                        <select id="evCategory">
-                            <option>Workshop</option><option>Seminar</option><option>Competition</option>
-                            <option>Technical</option><option>Hackathon</option>
-                        </select>
-                        <input type="date" id="evDate">
-                        <input type="text" id="evVenue" placeholder="Venue">
-                        <input type="text" id="evIcon" placeholder="Icon (emoji)" value="📅">
-                        <input type="text" id="evDesc" placeholder="Short description">
-                        <button type="submit" class="btn-primary full-width">Add Event</button>
-                    </form>
-                    <h4 class="dash-title">All Registrations</h4>
-                    <div id="allRegs" class="dash-list"></div>
-                </div>
-
-                <div class="dashboard-links">
-                    <a href="events.html" class="btn-primary">Browse Events</a>
-                    <a href="certificate.html" class="btn-light">My Certificates</a>
-                    <button id="logoutBtn" class="btn-light">Logout</button>
-                </div>
             </div>
-
-        </div>
     </div>
 
     <!-- FOOTER -->
     <footer>
-        <p>© 2026 Smart Event Portal | RCPIT Shirpur</p>
+        <p>© 2026 Smart Event Portal | 👁️ Website Views: <span id="visitorCount">…</span></p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase-config.js"></script>
+    <script src="js/common.js"></script>
     <script src="js/login.js"></script>
 </body>
 </html>

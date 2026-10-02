@@ -14,11 +14,6 @@ function showCertMessage(text, ok) {
     certMsg.style.background = ok === false ? "#fdecea" : "";
     certMsg.style.color = ok === false ? "#C0392B" : "";
 }
-function esc(s) {
-    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
-        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
-    });
-}
 function formatDate(d) {
     return new Date(d + "T00:00:00").toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" });
 }

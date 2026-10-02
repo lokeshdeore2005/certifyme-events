@@ -11,11 +11,6 @@ var filterButtons = document.querySelectorAll(".filter-btn");
 var selectedCategory = "All";
 
 // makes text safe to put inside HTML
-function esc(s) {
-    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
-        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
-    });
-}
 
 function formatDate(d) {
     return new Date(d + "T00:00:00").toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });

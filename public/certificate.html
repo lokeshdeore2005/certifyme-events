@@ -35,6 +35,21 @@
     <!-- LIST OF MY CERTIFICATES (filled by certificate.js) -->
     <div class="cert-msg-wrapper"><div id="certList" class="cert-list"></div></div>
 
+    <!-- TEMPLATE PICKER + UPLOAD -->
+    <div class="cert-msg-wrapper">
+        <div class="template-panel">
+            <h4>Choose a Certificate Template</h4>
+            <div id="templateList" class="template-list"></div>
+            <form id="uploadForm" class="upload-form hidden">
+                <h4>Upload Custom Certificate</h4>
+                <input type="text" id="tplName" placeholder="Template name">
+                <input type="file" id="tplFile" accept="image/png,image/jpeg">
+                <button type="submit" class="btn-primary">Upload Template</button>
+                <small>Use a landscape PNG/JPG background (about 1100 × 780). Text is printed on top.</small>
+            </form>
+        </div>
+    </div>
+
     <!-- CERTIFICATE TEMPLATE -->
     <div class="certificate-wrapper hidden" id="certWrapper">
         <div class="certificate" id="certificate">
@@ -94,11 +109,12 @@
 
     <!-- FOOTER -->
     <footer>
-        <p>© 2026 Smart Event Portal | RCPIT Shirpur</p>
+        <p>© 2026 Smart Event Portal | 👁️ Website Views: <span id="visitorCount">…</span></p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase-config.js"></script>
+    <script src="js/common.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <script src="js/certificate.js"></script>
 </body>

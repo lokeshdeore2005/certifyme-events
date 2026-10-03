@@ -72,3 +72,56 @@ document.getElementById("verifyBtn").addEventListener("click", function () {
 });
 
 start();
+
+/* ---------- TEMPLATES: built-in styles + uploaded designs ---------- */
+var builtIn = [
+    { name: "Classic", style: "classic" }, { name: "Modern Blue", style: "modern" },
+    { name: "Royal Gold", style: "royal" }, { name: "Night Navy", style: "dark" }
+];
+var certBox = document.getElementById("certificate");
+
+function applyTemplate(t, btn) {
+    certBox.className = "certificate tpl-" + (t.background_path ? "custom" : t.style);
+    certBox.style.backgroundImage = t.background_path
+        ? "url('" + sb.storage.from("certificate-templates").getPublicUrl(t.background_path).data.publicUrl + "')" : "";
+    document.querySelectorAll("#templateList button").forEach(function (b) { b.classList.remove("active"); });
+    if (btn) btn.classList.add("active");
+}
+
+async function loadTemplates() {
+    var res = await sb.from("certificate_templates").select("*").order("created_at");
+    var all = builtIn.concat(res.data || []);
+    var box = document.getElementById("templateList");
+    box.innerHTML = "";
+    all.forEach(function (t, i) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.textContent = t.name + (t.background_path ? " (uploaded)" : "");
+        b.onclick = function () { applyTemplate(t, b); };
+        box.appendChild(b);
+        if (i === 0) b.classList.add("active");
+    });
+}
+
+// only signed-in users see the upload form
+sb.auth.getUser().then(function (r) {
+    if (r.data.user) document.getElementById("uploadForm").classList.remove("hidden");
+});
+
+document.getElementById("uploadForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    var name = document.getElementById("tplName").value.trim();
+    var file = document.getElementById("tplFile").files[0];
+    if (!name || !file) { showCertMessage("Enter a template name and choose an image.", false); return; }
+    var u = (await sb.auth.getUser()).data.user;
+    var path = u.id + "/" + Date.now() + "-" + file.name.replace(/[^a-zA-Z0-9.]/g, "_");
+    var up = await sb.storage.from("certificate-templates").upload(path, file);
+    if (up.error) { showCertMessage("Upload failed: " + up.error.message, false); return; }
+    var ins = await sb.from("certificate_templates").insert({ name: name, style: "custom", background_path: path, uploaded_by: u.id });
+    if (ins.error) { showCertMessage("Could not save template: " + ins.error.message, false); return; }
+    showCertMessage("✅ Template uploaded.");
+    e.target.reset();
+    loadTemplates();
+});
+
+loadTemplates();

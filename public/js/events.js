@@ -70,3 +70,20 @@ async function loadEvents() {
     filterEvents();
 }
 loadEvents();
+
+// 4) HACKATHON SPONSORS
+async function loadSponsors() {
+    var box = document.getElementById("sponsorList");
+    var res = await sb.from("sponsors").select("*").order("created_at");
+    var list = res.data || [];
+    if (list.length === 0) { box.innerHTML = "<p>Sponsors will be announced soon.</p>"; return; }
+    box.innerHTML = list.map(function (s) {
+        var logo = s.logo_path ? sb.storage.from("sponsor-logos").getPublicUrl(s.logo_path).data.publicUrl : "";
+        return '<div class="sponsor-card">' +
+            (logo ? '<img src="' + esc(logo) + '" alt="' + esc(s.name) + ' logo">' : '<div class="sponsor-ph">🏢</div>') +
+            '<h4>' + esc(s.name) + '</h4><p>' + esc(s.description) + '</p>' +
+            (s.website_url ? '<a href="' + esc(s.website_url) + '" target="_blank" rel="noopener">Visit website</a>' : '') +
+            '</div>';
+    }).join("");
+}
+loadSponsors();

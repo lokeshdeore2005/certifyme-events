@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard | Smart Event Portal</title>
+    <meta name="description" content="Your events, registrations and certificates in one place.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body class="dash-body">
+
+    <!-- NAVBAR -->
+    <nav>
+        <div class="logo">🎓 Event Portal</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="events.html">Events</a>
+            <a href="certificate.html">Certificate</a>
+            <a href="dashboard.html" class="active">Dashboard</a>
+        </div>
+    </nav>
+
+    <!-- shown until we know the user is logged in -->
+    <p id="loading" class="dash-loading">Checking your login…</p>
+
+    <main id="dashMain" class="dash-main hidden">
+
+        <!-- GREETING BANNER -->
+        <section class="banner glass">
+            <div>
+                <p class="banner-small" id="todayText"></p>
+                <h1 id="greeting">Hello 👋</h1>
+                <p id="roleText"></p>
+            </div>
+            <div class="banner-actions">
+                <a href="events.html" class="btn-primary">Explore Events</a>
+                <button id="logoutBtn" class="btn-ghost">Logout</button>
+            </div>
+        </section>
+
+        <!-- STAT CARDS -->
+        <section class="stats">
+            <div class="stat glass"><span>📝</span><b id="statRegs">0</b><p>My Registrations</p></div>
+            <div class="stat glass"><span>✅</span><b id="statAttended">0</b><p>Events Attended</p></div>
+            <div class="stat glass"><span>🎓</span><b id="statCerts">0</b><p>Certificates Earned</p></div>
+            <div class="stat glass"><span>📅</span><b id="statUpcoming">0</b><p>Upcoming Events</p></div>
+        </section>
+
+        <div class="dash-grid">
+            <!-- UPCOMING EVENTS -->
+            <section class="panel glass">
+                <h3>🔥 Upcoming Events</h3>
+                <div id="upcomingList" class="ev-list"></div>
+            </section>
+
+            <!-- MY REGISTRATIONS + CERTIFICATES -->
+            <section class="panel glass">
+                <h3>📌 My Activity</h3>
+                <div id="myRegs" class="ev-list"></div>
+                <a href="certificate.html" class="link-more">View my certificates →</a>
+            </section>
+        </div>
+
+        <!-- ORGANIZER / ADMIN AREA -->
+        <div id="staffArea" class="hidden">
+            <div class="dash-grid">
+                <section class="panel glass">
+                    <h3>➕ Add New Event</h3>
+                    <form id="eventForm" class="dash-form">
+                        <input type="text" id="evName" placeholder="Event name">
+                        <select id="evCategory">
+                            <option>Workshop</option><option>Seminar</option><option>Competition</option>
+                            <option>Technical</option><option>Hackathon</option>
+                        </select>
+                        <input type="date" id="evDate">
+                        <input type="text" id="evVenue" placeholder="Venue">
+                        <input type="text" id="evIcon" placeholder="Icon (emoji)" value="📅">
+                        <input type="text" id="evDesc" placeholder="Short description">
+                        <button type="submit" class="btn-primary">Add Event</button>
+                    </form>
+                </section>
+
+                <section class="panel glass">
+                    <h3>🤝 Add Hackathon Sponsor</h3>
+                    <form id="sponsorForm" class="dash-form">
+                        <input type="text" id="spName" placeholder="Sponsor name">
+                        <input type="text" id="spWebsite" placeholder="Website (https://…)">
+                        <input type="text" id="spDesc" placeholder="Short description">
+                        <select id="spEvent"><option value="">All hackathons</option></select>
+                        <label class="file-label">Logo <input type="file" id="spLogo" accept="image/*"></label>
+                        <button type="submit" class="btn-primary">Add Sponsor</button>
+                    </form>
+                </section>
+            </div>
+
+            <section class="panel glass">
+                <h3>🧾 All Registrations</h3>
+                <div id="allRegs" class="ev-list"></div>
+            </section>
+        </div>
+
+        <div id="dashMsg" class="dash-msg"></div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2026 Smart Event Portal | 👁️ Website Views: <span id="visitorCount">…</span></p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

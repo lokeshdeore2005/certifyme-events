@@ -23,7 +23,7 @@
 
     <!-- PAGE HEADING -->
     <div class="page-title">
-        <h2>Login to Event Portal</h2>
+        <h2>Sign In / Sign Up</h2>
         <p>Students and organizers can log in from here.</p>
     </div>
 
@@ -90,25 +90,17 @@
                 </p>
             </form>
 
-            <!-- DEMO DASHBOARD PLACEHOLDER (shown after a demo login) -->
-            <div id="dashboard" class="dashboard hidden">
-                <h3>Welcome to your Dashboard 👋</h3>
-                <p id="dashboardText">You are logged in (demo only).</p>
-                <p class="small-text">A real dashboard will be added in the next phase.</p>
-                <div class="dashboard-links">
-                    <a href="events.html" class="btn-primary">Browse Events</a>
-                    <a href="certificate.html" class="btn-light">My Certificate</a>
-                </div>
             </div>
-
-        </div>
     </div>
 
     <!-- FOOTER -->
     <footer>
-        <p>© 2026 Smart Event Portal | RCPIT Shirpur</p>
+        <p>© 2026 Smart Event Portal | 👁️ Website Views: <span id="visitorCount">…</span></p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/common.js"></script>
     <script src="js/login.js"></script>
 </body>
 </html>

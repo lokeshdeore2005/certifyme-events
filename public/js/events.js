@@ -1,92 +1,89 @@
 /* ==========================================================
-   events.js  -->  EVENT DATA + SEARCH + CATEGORY FILTER
-   Simple beginner level JavaScript (no framework used).
+   events.js  -->  LOAD EVENTS FROM SUPABASE + SEARCH + FILTER
    ========================================================== */
 
-// 1) SAMPLE EVENT DATA (later this can come from a database)
-var events = [
-    { icon: "🖥️", name: "Tech Fest 2026",                 date: "15 Sep 2026", venue: "RCPIT Auditorium",  category: "Technical",   desc: "Annual technical festival with project displays and fun tech games." },
-    { icon: "💻", name: "Hackathon 2026",                  date: "22 Sep 2026", venue: "IT Department",     category: "Competition", desc: "24 hour coding challenge for students in teams of four." },
-    { icon: "🌐", name: "Web Development Workshop",        date: "30 Sep 2026", venue: "Computer Lab 1",    category: "Workshop",    desc: "Hands on session on HTML, CSS and JavaScript basics." },
-    { icon: "🔐", name: "Cybersecurity Awareness Seminar", date: "05 Oct 2026", venue: "Seminar Hall",      category: "Seminar",     desc: "Learn safe browsing, passwords and common online attacks." },
-    { icon: "🐍", name: "Python Programming Workshop",     date: "12 Oct 2026", venue: "Computer Lab 2",    category: "Workshop",    desc: "Beginner friendly Python coding practice with small projects." },
-    { icon: "🤖", name: "AI & Machine Learning Seminar",   date: "18 Oct 2026", venue: "Seminar Hall",      category: "Seminar",     desc: "Introduction to AI, ML models and real life applications." },
-    { icon: "🏆", name: "Coding Competition",              date: "25 Oct 2026", venue: "IT Department",     category: "Competition", desc: "Solve programming problems and win exciting prizes." },
-    { icon: "📊", name: "Project Exhibition",              date: "02 Nov 2026", venue: "Main Building",     category: "Technical",   desc: "Showcase your semester projects in front of faculty judges." },
-    { icon: "📈", name: "Data Science Workshop",           date: "09 Nov 2026", venue: "Computer Lab 3",    category: "Workshop",    desc: "Work with data, charts and simple prediction models." },
-    { icon: "💡", name: "Entrepreneurship Seminar",        date: "16 Nov 2026", venue: "Auditorium",        category: "Seminar",     desc: "Startup ideas, business planning and student innovation talks." }
-];
+var events = [];   // filled from the database
 
-// 2) GET THE PAGE ELEMENTS
 var eventList = document.getElementById("eventList");
 var searchBox = document.getElementById("searchBox");
 var noResult = document.getElementById("noResult");
 var filterButtons = document.querySelectorAll(".filter-btn");
-
-// remember which category is selected
 var selectedCategory = "All";
 
-// 3) SHOW THE EVENT CARDS ON THE PAGE
-function showEvents(list) {
-    eventList.innerHTML = "";               // clear old cards
+// makes text safe to put inside HTML
 
+function formatDate(d) {
+    return new Date(d + "T00:00:00").toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+}
+
+// 1) SHOW CARDS
+function showEvents(list) {
+    eventList.innerHTML = "";
     for (var i = 0; i < list.length; i++) {
         var e = list[i];
-
         var card = document.createElement("div");
         card.className = "card event-card";
         card.innerHTML =
-            '<div class="event-icon">' + e.icon + '</div>' +
-            '<span class="event-tag">' + e.category + '</span>' +
-            '<h3>' + e.name + '</h3>' +
-            '<p>Date: ' + e.date + '</p>' +
-            '<p>Venue: ' + e.venue + '</p>' +
-            '<p class="desc">' + e.desc + '</p>' +
-            // the event name is passed to the registration page using the URL
-            '<a class="card-btn" href="registration.html?event=' + encodeURIComponent(e.name) + '">Register</a>';
-
+            '<div class="event-icon">' + esc(e.icon) + '</div>' +
+            '<span class="event-tag">' + esc(e.category) + '</span>' +
+            '<h3>' + esc(e.name) + '</h3>' +
+            '<p>Date: ' + formatDate(e.event_date) + '</p>' +
+            '<p>Venue: ' + esc(e.venue) + '</p>' +
+            '<p class="desc">' + esc(e.description) + '</p>' +
+            // event id + name are passed to the registration page
+            '<a class="card-btn" href="registration.html?id=' + e.id + '&event=' + encodeURIComponent(e.name) + '">Register</a>';
         eventList.appendChild(card);
     }
-
-    // show "no events found" message when the list is empty
-    noResult.style.display = (list.length === 0) ? "block" : "none";
+    noResult.style.display = list.length === 0 ? "block" : "none";
 }
 
-// 4) FILTER THE EVENTS USING SEARCH TEXT + CATEGORY
+// 2) SEARCH + CATEGORY
 function filterEvents() {
     var text = searchBox.value.toLowerCase();
-    var result = [];
-
-    for (var i = 0; i < events.length; i++) {
-        var e = events[i];
-        var matchText = e.name.toLowerCase().indexOf(text) !== -1;
-        var matchCategory = (selectedCategory === "All" || e.category === selectedCategory);
-
-        if (matchText && matchCategory) {
-            result.push(e);
-        }
-    }
-
-    showEvents(result);
+    showEvents(events.filter(function (e) {
+        var catOk = selectedCategory === "All" || e.category === selectedCategory;
+        var textOk = (e.name + " " + e.venue + " " + (e.description || "")).toLowerCase().indexOf(text) !== -1;
+        return catOk && textOk;
+    }));
 }
 
-// 5) SEARCH BOX EVENT
 searchBox.addEventListener("input", filterEvents);
-
-// 6) CATEGORY BUTTON CLICKS
-for (var b = 0; b < filterButtons.length; b++) {
-    filterButtons[b].addEventListener("click", function () {
-        // remove highlight from all buttons
-        for (var j = 0; j < filterButtons.length; j++) {
-            filterButtons[j].classList.remove("active");
-        }
-        // highlight the clicked button
-        this.classList.add("active");
-
-        selectedCategory = this.getAttribute("data-category");
+filterButtons.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+        filterButtons.forEach(function (b) { b.classList.remove("active"); });
+        btn.classList.add("active");
+        selectedCategory = btn.getAttribute("data-category");
         filterEvents();
     });
-}
+});
 
-// 7) SHOW ALL EVENTS WHEN THE PAGE OPENS
-showEvents(events);
+// 3) LOAD FROM DATABASE
+async function loadEvents() {
+    var res = await sb.from("events").select("*").order("event_date");
+    if (res.error) {
+        noResult.textContent = "Could not load events: " + res.error.message;
+        noResult.style.display = "block";
+        return;
+    }
+    events = res.data;
+    noResult.textContent = "No events found. Try another search.";
+    filterEvents();
+}
+loadEvents();
+
+// 4) HACKATHON SPONSORS
+async function loadSponsors() {
+    var box = document.getElementById("sponsorList");
+    var res = await sb.from("sponsors").select("*").order("created_at");
+    var list = res.data || [];
+    if (list.length === 0) { box.innerHTML = "<p>Sponsors will be announced soon.</p>"; return; }
+    box.innerHTML = list.map(function (s) {
+        var logo = s.logo_path ? sb.storage.from("sponsor-logos").getPublicUrl(s.logo_path).data.publicUrl : "";
+        return '<div class="sponsor-card">' +
+            (logo ? '<img src="' + esc(logo) + '" alt="' + esc(s.name) + ' logo">' : '<div class="sponsor-ph">🏢</div>') +
+            '<h4>' + esc(s.name) + '</h4><p>' + esc(s.description) + '</p>' +
+            (s.website_url ? '<a href="' + esc(s.website_url) + '" target="_blank" rel="noopener">Visit website</a>' : '') +
+            '</div>';
+    }).join("");
+}
+loadSponsors();

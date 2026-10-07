@@ -35,6 +35,11 @@ function showEvents(list) {
         eventList.appendChild(card);
     }
     noResult.style.display = list.length === 0 ? "block" : "none";
+    // sponsors only appear when a Hackathon event is on screen
+    var hasHackathon = list.some(function (e) {
+        return e.category === "Hackathon" || /hackathon/i.test(e.name);
+    });
+    document.getElementById("sponsorSection").style.display = hasHackathon ? "" : "none";
 }
 
 // 2) SEARCH + CATEGORY

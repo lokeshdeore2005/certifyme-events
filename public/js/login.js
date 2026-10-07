@@ -65,6 +65,7 @@ signupForm.addEventListener("submit", async function (e) {
     var email = document.getElementById("signupEmail").value.trim();
     var password = document.getElementById("signupPassword").value;
     var confirm = document.getElementById("confirmPassword").value;
+    var role = document.getElementById("signupRole").value;   // "student" or "organizer"
     if (!name || !email || !password || !confirm) return showMessage("Please fill all the fields.", "error");
     if (!isValidEmail(email)) return showMessage("Please enter a valid email address.", "error");
     if (password.length < 6) return showMessage("Password must be at least 6 characters long.", "error");
@@ -72,7 +73,7 @@ signupForm.addEventListener("submit", async function (e) {
 
     var res = await sb.auth.signUp({
         email: email, password: password,
-        options: { data: { full_name: name }, emailRedirectTo: window.location.origin + "/login.html" }
+        options: { data: { full_name: name, role: role }, emailRedirectTo: window.location.origin + "/login.html" }
     });
     if (res.error) return showMessage(res.error.message, "error");
     if (res.data.session) {

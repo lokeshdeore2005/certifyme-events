@@ -84,8 +84,12 @@ signupForm.addEventListener("submit", async function (e) {
     }
 });
 
-// 5) AFTER LOGIN -> go to the protected dashboard page
-function showDashboard() { window.location.href = "dashboard.html"; }
+// 5) AFTER LOGIN -> organizers go to organizer-dashboard, students to dashboard
+async function showDashboard() {
+    var r = await sb.auth.getUser();
+    var staff = r.data.user ? await isStaff(r.data.user.id) : false;
+    window.location.href = staff ? "organizer-dashboard.html" : "dashboard.html";
+}
 
 // 6) ALREADY LOGGED IN? skip the login page
 sb.auth.getSession().then(function (r) { if (r.data.session) showDashboard(); });

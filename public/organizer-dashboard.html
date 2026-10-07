@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizer Dashboard | Smart Event Portal</title>
+    <meta name="description" content="Create events, see participants and issue certificates.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/organizer.css">
+</head>
+<body class="dash-body">
+
+    <nav>
+        <div class="logo">🎓 Event Portal</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="events.html">Events</a>
+            <a href="certificate.html">Certificate</a>
+            <a href="organizer-dashboard.html" class="active">Organizer</a>
+        </div>
+    </nav>
+
+    <p id="loading" class="dash-loading">Checking your login…</p>
+
+    <main id="orgMain" class="dash-main hidden">
+
+        <!-- BANNER -->
+        <section class="banner glass">
+            <div>
+                <p class="banner-small">Organizer Panel</p>
+                <h1 id="orgGreeting">Welcome 👋</h1>
+                <p id="orgEmail"></p>
+            </div>
+            <div class="banner-actions">
+                <button id="logoutBtn" class="btn-ghost">Logout</button>
+            </div>
+        </section>
+
+        <!-- STATS -->
+        <section class="stats">
+            <div class="stat glass"><span>📅</span><b id="statEvents">0</b><p>My Events</p></div>
+            <div class="stat glass"><span>👥</span><b id="statParticipants">0</b><p>Total Participants</p></div>
+            <div class="stat glass"><span>🎓</span><b id="statIssued">0</b><p>Certificates Issued</p></div>
+        </section>
+
+        <div class="dash-grid">
+            <!-- 1) CREATE EVENT -->
+            <section class="panel glass">
+                <h3>➕ Create Event</h3>
+                <form id="createForm" class="dash-form">
+                    <input type="text" id="evName" placeholder="Event name">
+                    <input type="date" id="evDate">
+                    <select id="evCategory">
+                        <option>Workshop</option><option>Seminar</option><option>Competition</option>
+                        <option>Technical</option><option>Hackathon</option>
+                    </select>
+                    <input type="text" id="evVenue" placeholder="Venue" value="Main Auditorium">
+                    <textarea id="evDesc" rows="3" placeholder="Description"></textarea>
+                    <label class="small-label">Certificate Template</label>
+                    <select id="evTemplate"><option value="">Classic (built-in)</option></select>
+                    <button type="submit" class="btn-primary">Create Event</button>
+                </form>
+            </section>
+
+            <!-- 2) MY EVENTS -->
+            <section class="panel glass">
+                <h3>📋 My Events</h3>
+                <p class="hint">Click an event to see its participants.</p>
+                <div id="myEvents" class="ev-list"></div>
+            </section>
+        </div>
+
+        <!-- 3) PARTICIPANTS -->
+        <section id="partPanel" class="panel glass hidden">
+            <div class="part-head">
+                <h3 id="partTitle">👥 Participants</h3>
+                <button id="issueBtn" class="btn-primary">🎓 Generate / Issue Certificates</button>
+            </div>
+            <div id="partList"></div>
+        </section>
+
+        <div id="dashMsg" class="dash-msg"></div>
+    </main>
+
+    <footer>
+        <p>© 2026 Smart Event Portal | 👁️ Website Views: <span id="visitorCount">…</span></p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/organizer.js"></script>
+</body>
+</html>

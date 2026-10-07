@@ -238,3 +238,6 @@ create policy "cert files staff write" on storage.objects for insert to authenti
 -- insert into public.user_roles (user_id, role)
 -- select id, 'organizer' from auth.users where email = 'you@example.com';
 -- ============================================================
+
+-- ===== ADD-ON: certificate template choice per event (organizer dashboard) =====
+alter table public.events add column if not exists template_id uuid references public.certificate_templates(id);

@@ -27,6 +27,7 @@ function renderCertificate(c) {
     var verifyUrl = window.location.origin + "/certificate.html?code=" + c.certificate_code;
     document.getElementById("qrcode").innerHTML = "";
     new QRCode(document.getElementById("qrcode"), { text: verifyUrl, width: 90, height: 90 });
+    applyDesign(c);
     document.getElementById("certWrapper").classList.remove("hidden");
     document.getElementById("certActions").classList.remove("hidden");
 }
@@ -73,55 +74,18 @@ document.getElementById("verifyBtn").addEventListener("click", function () {
 
 start();
 
-/* ---------- TEMPLATES: built-in styles + uploaded designs ---------- */
-var builtIn = [
-    { name: "Classic", style: "classic" }, { name: "Modern Blue", style: "modern" },
-    { name: "Royal Gold", style: "royal" }, { name: "Night Navy", style: "dark" }
-];
-var certBox = document.getElementById("certificate");
-
-function applyTemplate(t, btn) {
-    certBox.className = "certificate tpl-" + (t.background_path ? "custom" : t.style);
-    certBox.style.backgroundImage = t.background_path
-        ? "url('" + sb.storage.from("certificate-templates").getPublicUrl(t.background_path).data.publicUrl + "')" : "";
-    document.querySelectorAll("#templateList button").forEach(function (b) { b.classList.remove("active"); });
-    if (btn) btn.classList.add("active");
+/* ---------- DESIGN chosen by the organizer (read-only for students) ---------- */
+async function applyDesign(c) {
+    var box = document.getElementById("certificate");
+    box.className = "certificate tpl-" + (c.style || "classic");
+    box.style.backgroundImage = "";
+    if (c.template_id) {                       // uploaded custom background
+        var t = await sb.from("certificate_templates").select("background_path").eq("id", c.template_id).maybeSingle();
+        if (t.data && t.data.background_path) {
+            box.className = "certificate tpl-custom";
+            box.style.backgroundImage = "url('" + sb.storage.from("certificate-templates").getPublicUrl(t.data.background_path).data.publicUrl + "')";
+        }
+    }
+    box.style.borderColor = c.accent_color || "";
+    document.querySelector(".cert-inner-border").style.borderColor = c.accent_color || "";
 }
-
-async function loadTemplates() {
-    var res = await sb.from("certificate_templates").select("*").order("created_at");
-    var all = builtIn.concat(res.data || []);
-    var box = document.getElementById("templateList");
-    box.innerHTML = "";
-    all.forEach(function (t, i) {
-        var b = document.createElement("button");
-        b.type = "button";
-        b.textContent = t.name + (t.background_path ? " (uploaded)" : "");
-        b.onclick = function () { applyTemplate(t, b); };
-        box.appendChild(b);
-        if (i === 0) b.classList.add("active");
-    });
-}
-
-// only signed-in users see the upload form
-sb.auth.getUser().then(function (r) {
-    if (r.data.user) document.getElementById("uploadForm").classList.remove("hidden");
-});
-
-document.getElementById("uploadForm").addEventListener("submit", async function (e) {
-    e.preventDefault();
-    var name = document.getElementById("tplName").value.trim();
-    var file = document.getElementById("tplFile").files[0];
-    if (!name || !file) { showCertMessage("Enter a template name and choose an image.", false); return; }
-    var u = (await sb.auth.getUser()).data.user;
-    var path = u.id + "/" + Date.now() + "-" + file.name.replace(/[^a-zA-Z0-9.]/g, "_");
-    var up = await sb.storage.from("certificate-templates").upload(path, file);
-    if (up.error) { showCertMessage("Upload failed: " + up.error.message, false); return; }
-    var ins = await sb.from("certificate_templates").insert({ name: name, style: "custom", background_path: path, uploaded_by: u.id });
-    if (ins.error) { showCertMessage("Could not save template: " + ins.error.message, false); return; }
-    showCertMessage("✅ Template uploaded.");
-    e.target.reset();
-    loadTemplates();
-});
-
-loadTemplates();

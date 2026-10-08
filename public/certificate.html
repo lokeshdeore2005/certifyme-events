@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,8 +24,8 @@
 
     <!-- PAGE HEADING -->
     <div class="page-title">
-        <h2>Certificate Preview</h2>
-        <p>Your issued certificates. Each one has a QR code that anyone can scan to verify it.</p>
+        <h2>My Issued Certificates</h2>
+        <p>View and download your official event certificates below. Each certificate includes a verifiable QR code.</p>
     </div>
 
     <!-- message shown by the demo buttons -->
@@ -35,22 +36,7 @@
     <!-- LIST OF MY CERTIFICATES (filled by certificate.js) -->
     <div class="cert-msg-wrapper"><div id="certList" class="cert-list"></div></div>
 
-    <!-- TEMPLATE PICKER + UPLOAD -->
-    <div class="cert-msg-wrapper">
-        <div class="template-panel">
-            <h4>Choose a Certificate Template</h4>
-            <div id="templateList" class="template-list"></div>
-            <form id="uploadForm" class="upload-form hidden">
-                <h4>Upload Custom Certificate</h4>
-                <input type="text" id="tplName" placeholder="Template name">
-                <input type="file" id="tplFile" accept="image/png,image/jpeg">
-                <button type="submit" class="btn-primary">Upload Template</button>
-                <small>Use a landscape PNG/JPG background (about 1100 × 780). Text is printed on top.</small>
-            </form>
-        </div>
-    </div>
-
-    <!-- CERTIFICATE TEMPLATE -->
+    <!-- CERTIFICATE TEMPLATE (STRICT READ-ONLY PREVIEW) -->
     <div class="certificate-wrapper hidden" id="certWrapper">
         <div class="certificate" id="certificate">
             <div class="cert-inner-border">
@@ -104,7 +90,7 @@
     <div class="cert-actions hidden" id="certActions">
         <button class="btn-primary" id="downloadBtn">Download Certificate</button>
         <button class="btn-light" id="verifyBtn">Verify Certificate</button>
-        <a href="index.html" class="btn-light">Back to Home</a>
+        <a href="dashboard.html" class="btn-light">Back to Dashboard</a>
     </div>
 
     <!-- FOOTER -->

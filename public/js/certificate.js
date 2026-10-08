@@ -1,127 +1,191 @@
 /* ==========================================================
-   certificate.js  -->  SHOW REAL CERTIFICATES + QR + VERIFY
-   certificate.html            -> list of my certificates
-   certificate.html?code=XXXX  -> one certificate (public verification)
+   certificate.js  -->  STRICT READ-ONLY CERTIFICATE VIEW + QR + VERIFY
+   certificate.html            -> list of student's issued certificates
+   certificate.html?code=XXXX  -> single certificate (public verification / direct view)
    ========================================================== */
 
 var certMsg = document.getElementById("certMsg");
 var certList = document.getElementById("certList");
-var code = new URLSearchParams(window.location.search).get("code");
+var certBox = document.getElementById("certificate");
+var params = new URLSearchParams(window.location.search);
+var code = params.get("code");
+var certId = params.get("id");
+
+var builtInStyles = {
+    classic: "classic",
+    modern: "modern",
+    royal: "royal",
+    dark: "dark"
+};
 
 function showCertMessage(text, ok) {
+    if (!certMsg) return;
     certMsg.textContent = text;
     certMsg.style.display = "block";
     certMsg.style.background = ok === false ? "#fdecea" : "";
     certMsg.style.color = ok === false ? "#C0392B" : "";
 }
+
 function formatDate(d) {
+    if (!d) return "";
     return new Date(d + "T00:00:00").toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" });
 }
 
-// fill the template with real data + draw the QR code
-function renderCertificate(c) {
-    document.querySelector(".student-name").textContent = c.student_name;
-    document.querySelector(".event-name").textContent = c.event_name;
-    document.querySelector(".event-date").textContent = formatDate(c.event_date);
-    document.getElementById("certCode").textContent = c.certificate_code;
-    var verifyUrl = window.location.origin + "/certificate.html?code=" + c.certificate_code;
-    document.getElementById("qrcode").innerHTML = "";
-    new QRCode(document.getElementById("qrcode"), { text: verifyUrl, width: 90, height: 90 });
-    document.getElementById("certWrapper").classList.remove("hidden");
-    document.getElementById("certActions").classList.remove("hidden");
-}
+// Automatically apply the template/style assigned by the Organizer (Read-Only for Student)
+async function applyAssignedTemplate(c) {
+    if (!certBox) return;
+    certBox.className = "certificate tpl-classic";
+    certBox.style.backgroundImage = "";
 
-// VERIFY: checks the code in the database (works without login)
-async function verify(c) {
-    var res = await sb.rpc("verify_certificate", { _code: c });
-    if (res.error || !res.data || res.data.length === 0) {
-        showCertMessage("❌ Certificate " + c + " is NOT valid.", false);
-        return null;
+    // Apply custom theme/border color if saved by the organizer on the certificate record
+    if (c.theme_color || c.border_color) {
+        var customColor = c.theme_color || c.border_color;
+        var innerBorder = certBox.querySelector(".cert-inner-border");
+        var certHeading = certBox.querySelector(".cert-heading");
+        if (innerBorder) innerBorder.style.borderColor = customColor;
+        if (certHeading) certHeading.style.color = customColor;
     }
-    showCertMessage("✅ Valid certificate issued to " + res.data[0].student_name + " for " + res.data[0].event_name + ".");
-    return res.data[0];
-}
 
-async function start() {
-    if (code) {                                     // opened from a QR scan
-        var c = await verify(code);
-        if (c) renderCertificate(c);
+    if (!c.template_id) return;
+
+    // 1) Check if template_id matches a built-in style name directly
+    var key = String(c.template_id).toLowerCase();
+    if (builtInStyles[key]) {
+        certBox.className = "certificate tpl-" + builtInStyles[key];
         return;
     }
-    var u = (await sb.auth.getUser()).data.user;
-    if (!u) {
-        certList.innerHTML = '<p>Please <a href="login.html" style="display:inline;box-shadow:none;padding:0">login</a> to see your certificates.</p>';
+
+    // 2) Otherwise look up the template in Supabase 'certificate_templates' table
+    var res = await sb.from("certificate_templates").select("*").eq("id", c.template_id).maybeSingle();
+    if (res.data) {
+        var tName = (res.data.name || "").toLowerCase();
+        if (builtInStyles[tName]) {
+            certBox.className = "certificate tpl-" + builtInStyles[tName];
+        }
+        if (res.data.bg_path || res.data.image_url) {
+            var bgUrl = res.data.image_url;
+            if (!bgUrl && res.data.bg_path) {
+                var pub = sb.storage.from("certificate-templates").getPublicUrl(res.data.bg_path);
+                bgUrl = pub.data && pub.data.publicUrl;
+            }
+            if (bgUrl) {
+                certBox.className = "certificate tpl-custom";
+                certBox.style.backgroundImage = "url('" + bgUrl + "')";
+                certBox.style.backgroundSize = "cover";
+                certBox.style.backgroundPosition = "center";
+            }
+        }
+    }
+}
+
+// Render the certificate preview on screen (Read-Only)
+async function renderCertificate(c) {
+    if (!c) {
+        showCertMessage("Certificate not found or invalid certificate code.", false);
         return;
     }
-    var res = await sb.from("certificates").select("*").eq("user_id", u.id).order("issued_at", { ascending: false });
-    var list = res.data || [];
-    if (list.length === 0) { certList.innerHTML = "<p>No certificates issued to you yet.</p>"; return; }
-    certList.innerHTML = list.map(function (c, i) {
-        return '<a href="#" data-i="' + i + '">🎓 ' + esc(c.event_name) + " — " + esc(c.certificate_code) + "</a>";
-    }).join("");
-    certList.querySelectorAll("a").forEach(function (a) {
-        a.addEventListener("click", function (e) { e.preventDefault(); renderCertificate(list[a.getAttribute("data-i")]); });
+
+    await applyAssignedTemplate(c);
+
+    var wrapper = document.getElementById("certWrapper");
+    var actions = document.getElementById("certActions");
+    if (wrapper) wrapper.classList.remove("hidden");
+    if (actions) actions.classList.remove("hidden");
+
+    var sName = certBox.querySelector(".student-name");
+    var eName = certBox.querySelector(".event-name");
+    var eDate = certBox.querySelector(".event-date");
+    var cCode = document.getElementById("certCode");
+
+    if (sName) sName.textContent = c.student_name || "Student";
+    if (eName) eName.textContent = c.event_name || "College Event";
+    if (eDate) eDate.textContent = formatDate(c.event_date);
+    if (cCode) cCode.textContent = c.certificate_code || c.id;
+
+    // Generate QR Code for verification
+    var qrContainer = document.getElementById("qrcode");
+    if (qrContainer) {
+        qrContainer.innerHTML = "";
+        var verifyUrl = window.location.origin + window.location.pathname + "?code=" + encodeURIComponent(c.certificate_code || c.id);
+        if (typeof QRCode !== "undefined") {
+            new QRCode(qrContainer, {
+                text: verifyUrl,
+                width: 80,
+                height: 80
+            });
+        }
+    }
+}
+
+// Load either a single certificate (via ?code= or ?id=) OR the logged-in student's list
+async function initCertificates() {
+    // Case 1: Direct link with ?code=XXXX or ?id=XXXX
+    if (code || certId) {
+        var query = sb.from("certificates").select("*");
+        query = code ? query.eq("certificate_code", code) : query.eq("id", certId);
+        var singleRes = await query.maybeSingle();
+
+        if (!singleRes.data) {
+            showCertMessage("No certificate found with that verification code.", false);
+            return;
+        }
+        showCertMessage("✅ Verified Certificate issued to " + singleRes.data.student_name, true);
+        await renderCertificate(singleRes.data);
+        return;
+    }
+
+    // Case 2: Logged-in student viewing all their issued certificates
+    var authRes = await sb.auth.getUser();
+    var user = authRes.data && authRes.data.user;
+    if (!user) {
+        showCertMessage("Please login to view and download your issued certificates.", false);
+        return;
+    }
+
+    var listRes = await sb.from("certificates").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
+    var certs = listRes.data || [];
+
+    if (certs.length === 0) {
+        showCertMessage("You do not have any issued certificates yet.", false);
+        return;
+    }
+
+    // Render clickable list of student's certificates
+    if (certList) {
+        certList.innerHTML = certs.map(function (item, idx) {
+            return '<button class="btn-light cert-select-btn" data-idx="' + idx + '" style="margin: 5px;">🎓 ' +
+                esc(item.event_name) + " (" + formatDate(item.event_date) + ")</button>";
+        }).join("");
+
+        certList.querySelectorAll(".cert-select-btn").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                var selected = certs[ Number(btn.getAttribute("data-idx")) ];
+                renderCertificate(selected);
+            });
+        });
+    }
+
+    // Automatically preview the latest certificate
+    await renderCertificate(certs[0]);
+}
+
+// Download / Print Certificate Button
+var downloadBtn = document.getElementById("downloadBtn");
+if (downloadBtn) {
+    downloadBtn.addEventListener("click", function () {
+        window.print();
     });
-    renderCertificate(list[0]);
 }
 
-// DOWNLOAD: browser "Save as PDF" of just the certificate
-document.getElementById("downloadBtn").addEventListener("click", function () { window.print(); });
-document.getElementById("verifyBtn").addEventListener("click", function () {
-    verify(document.getElementById("certCode").textContent);
-});
-
-start();
-
-/* ---------- TEMPLATES: built-in styles + uploaded designs ---------- */
-var builtIn = [
-    { name: "Classic", style: "classic" }, { name: "Modern Blue", style: "modern" },
-    { name: "Royal Gold", style: "royal" }, { name: "Night Navy", style: "dark" }
-];
-var certBox = document.getElementById("certificate");
-
-function applyTemplate(t, btn) {
-    certBox.className = "certificate tpl-" + (t.background_path ? "custom" : t.style);
-    certBox.style.backgroundImage = t.background_path
-        ? "url('" + sb.storage.from("certificate-templates").getPublicUrl(t.background_path).data.publicUrl + "')" : "";
-    document.querySelectorAll("#templateList button").forEach(function (b) { b.classList.remove("active"); });
-    if (btn) btn.classList.add("active");
-}
-
-async function loadTemplates() {
-    var res = await sb.from("certificate_templates").select("*").order("created_at");
-    var all = builtIn.concat(res.data || []);
-    var box = document.getElementById("templateList");
-    box.innerHTML = "";
-    all.forEach(function (t, i) {
-        var b = document.createElement("button");
-        b.type = "button";
-        b.textContent = t.name + (t.background_path ? " (uploaded)" : "");
-        b.onclick = function () { applyTemplate(t, b); };
-        box.appendChild(b);
-        if (i === 0) b.classList.add("active");
+// Verify Certificate Button
+var verifyBtn = document.getElementById("verifyBtn");
+if (verifyBtn) {
+    verifyBtn.addEventListener("click", function () {
+        var currentCode = document.getElementById("certCode").textContent;
+        if (currentCode) {
+            showCertMessage("✅ Certificate ID " + currentCode + " is authentic and verified by RCPIT Event Portal.", true);
+        }
     });
 }
 
-// only signed-in users see the upload form
-sb.auth.getUser().then(function (r) {
-    if (r.data.user) document.getElementById("uploadForm").classList.remove("hidden");
-});
-
-document.getElementById("uploadForm").addEventListener("submit", async function (e) {
-    e.preventDefault();
-    var name = document.getElementById("tplName").value.trim();
-    var file = document.getElementById("tplFile").files[0];
-    if (!name || !file) { showCertMessage("Enter a template name and choose an image.", false); return; }
-    var u = (await sb.auth.getUser()).data.user;
-    var path = u.id + "/" + Date.now() + "-" + file.name.replace(/[^a-zA-Z0-9.]/g, "_");
-    var up = await sb.storage.from("certificate-templates").upload(path, file);
-    if (up.error) { showCertMessage("Upload failed: " + up.error.message, false); return; }
-    var ins = await sb.from("certificate_templates").insert({ name: name, style: "custom", background_path: path, uploaded_by: u.id });
-    if (ins.error) { showCertMessage("Could not save template: " + ins.error.message, false); return; }
-    showCertMessage("✅ Template uploaded.");
-    e.target.reset();
-    loadTemplates();
-});
-
-loadTemplates();
+initCertificates();

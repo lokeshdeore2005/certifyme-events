@@ -48,57 +48,25 @@
         </section>
 
         <div class="dash-grid">
-            <!-- UPCOMING EVENTS -->
+            <!-- MY REGISTERED EVENTS (STRICT READ-ONLY) -->
             <section class="panel glass">
-                <h3>🔥 Upcoming Events</h3>
-                <div id="upcomingList" class="ev-list"></div>
-            </section>
-
-            <!-- MY REGISTRATIONS + CERTIFICATES -->
-            <section class="panel glass">
-                <h3>📌 My Activity</h3>
+                <h3>📌 My Registered Events</h3>
                 <div id="myRegs" class="ev-list"></div>
-                <a href="certificate.html" class="link-more">View my certificates →</a>
             </section>
-        </div>
 
-        <!-- ORGANIZER / ADMIN AREA -->
-        <div id="staffArea" class="hidden">
-            <div class="dash-grid">
-                <section class="panel glass">
-                    <h3>➕ Add New Event</h3>
-                    <form id="eventForm" class="dash-form">
-                        <input type="text" id="evName" placeholder="Event name">
-                        <select id="evCategory">
-                            <option>Workshop</option><option>Seminar</option><option>Competition</option>
-                            <option>Technical</option><option>Hackathon</option>
-                        </select>
-                        <input type="date" id="evDate">
-                        <input type="text" id="evVenue" placeholder="Venue">
-                        <input type="text" id="evIcon" placeholder="Icon (emoji)" value="📅">
-                        <input type="text" id="evDesc" placeholder="Short description">
-                        <button type="submit" class="btn-primary">Add Event</button>
-                    </form>
-                </section>
-
-                <section class="panel glass">
-                    <h3>🤝 Add Hackathon Sponsor</h3>
-                    <form id="sponsorForm" class="dash-form">
-                        <input type="text" id="spName" placeholder="Sponsor name">
-                        <input type="text" id="spWebsite" placeholder="Website (https://…)">
-                        <input type="text" id="spDesc" placeholder="Short description">
-                        <select id="spEvent"><option value="">All hackathons</option></select>
-                        <label class="file-label">Logo <input type="file" id="spLogo" accept="image/*"></label>
-                        <button type="submit" class="btn-primary">Add Sponsor</button>
-                    </form>
-                </section>
-            </div>
-
+            <!-- MY ISSUED CERTIFICATES (VIEW / DOWNLOAD ONLY) -->
             <section class="panel glass">
-                <h3>🧾 All Registrations</h3>
-                <div id="allRegs" class="ev-list"></div>
+                <h3>🎓 My Issued Certificates</h3>
+                <div id="myCerts" class="ev-list"></div>
+                <a href="certificate.html" class="link-more">View / Download Certificates →</a>
             </section>
         </div>
+
+        <!-- UPCOMING EVENTS -->
+        <section class="panel glass" style="margin-top: 20px;">
+            <h3>🔥 Upcoming Events</h3>
+            <div id="upcomingList" class="ev-list"></div>
+        </section>
 
         <div id="dashMsg" class="dash-msg"></div>
     </main>

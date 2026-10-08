@@ -24,7 +24,7 @@
     <!-- PAGE HEADING -->
     <div class="page-title">
         <h2>Sign In / Sign Up</h2>
-        <p>Students and organizers can log in from here.</p>
+        <p>Students and organizers can log in or create an account from here.</p>
     </div>
 
     <div class="login-wrapper">
@@ -55,26 +55,38 @@
                 </p>
             </form>
 
-            <!-- ADMIN LOGIN FORM (hidden by default) -->
+            <!-- ADMIN / ORGANIZER LOGIN FORM (hidden by default) -->
             <form id="adminForm" class="login-form hidden">
                 <label for="adminEmail">Email</label>
-                <input type="text" id="adminEmail" placeholder="admin@rcpit.ac.in">
+                <input type="text" id="adminEmail" placeholder="organizer@rcpit.ac.in">
 
                 <label for="adminPassword">Password</label>
                 <input type="password" id="adminPassword" placeholder="Enter password">
 
-                <button type="submit" class="btn-primary full-width">Admin Login</button>
+                <button type="submit" class="btn-primary full-width">Organizer Login</button>
+
+                <p class="small-text">
+                    New Organizer?
+                    <a href="#" id="showOrganizerSignup">Create an account</a>
+                </p>
             </form>
 
             <!-- SIGNUP FORM (hidden by default) -->
             <form id="signupForm" class="login-form hidden">
-                <h3 class="form-heading">Create a Student Account</h3>
+                <h3 class="form-heading">Create an Account</h3>
 
                 <label for="signupName">Full Name</label>
                 <input type="text" id="signupName" placeholder="Enter your full name">
 
                 <label for="signupEmail">Email</label>
                 <input type="text" id="signupEmail" placeholder="example@gmail.com">
+
+                <!-- ROLE DROPDOWN FOR AUTOMATIC ROLE ASSIGNMENT -->
+                <label for="signupRole">Select Role</label>
+                <select id="signupRole" style="width: 100%; padding: 10px 12px; margin-bottom: 14px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; background: #fff;">
+                    <option value="student">Student</option>
+                    <option value="organizer">Organizer</option>
+                </select>
 
                 <label for="signupPassword">Password</label>
                 <input type="password" id="signupPassword" placeholder="Minimum 6 characters">
@@ -90,7 +102,7 @@
                 </p>
             </form>
 
-            </div>
+        </div>
     </div>
 
     <!-- FOOTER -->

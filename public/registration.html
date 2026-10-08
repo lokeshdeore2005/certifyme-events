@@ -57,6 +57,15 @@
                 <input type="text" id="email" placeholder="example@gmail.com">
                 <span class="error" id="errEmail"></span>
 
+                <!-- ROLE SELECTION (ADDED FOR PRODUCTION-READY USER ROLES) -->
+                <label for="role">Select Role *</label>
+                <select id="role">
+                    <option value="">-- Select Role --</option>
+                    <option value="student">Student</option>
+                    <option value="organizer">Organizer</option>
+                </select>
+                <span class="error" id="errRole"></span>
+
                 <label for="eventName">Event Name (auto filled)</label>
                 <input type="text" id="eventName" readonly>
 

@@ -21,15 +21,16 @@
         </div>
     </nav>
 
-    <p id="loading" class="dash-loading">Checking your login…</p>
+    <!-- Instant hidden loading so it NEVER freezes on screen -->
+    <p id="loading" class="dash-loading" style="display: none;">Checking Organizer access…</p>
 
-    <main id="orgMain" class="dash-main hidden">
+    <main id="orgMain" class="dash-main">
 
         <!-- BANNER -->
         <section class="banner glass">
             <div>
-                <p class="banner-small">Organizer Panel</p>
-                <h1 id="orgGreeting">Welcome 👋</h1>
+                <p class="banner-small">Organizer Panel (Authorized Access Only)</p>
+                <h1 id="orgGreeting">Welcome, Organizer 👋</h1>
                 <p id="orgEmail"></p>
             </div>
             <div class="banner-actions">
@@ -52,13 +53,26 @@
                     <input type="text" id="evName" placeholder="Event name">
                     <input type="date" id="evDate">
                     <select id="evCategory">
-                        <option>Workshop</option><option>Seminar</option><option>Competition</option>
-                        <option>Technical</option><option>Hackathon</option>
+                        <option>Workshop</option>
+                        <option>Seminar</option>
+                        <option>Competition</option>
+                        <option>Technical</option>
+                        <option>Hackathon</option>
                     </select>
                     <input type="text" id="evVenue" placeholder="Venue" value="Main Auditorium">
                     <textarea id="evDesc" rows="3" placeholder="Description"></textarea>
-                    <label class="small-label">Certificate Template</label>
-                    <select id="evTemplate"><option value="">Classic (built-in)</option></select>
+
+                    <label class="small-label">Default Certificate Template</label>
+                    <select id="evTemplate">
+                        <option value="classic">Classic Academic (Built-in)</option>
+                        <option value="modern">Modern Tech (Built-in)</option>
+                        <option value="royal">Royal Gold (Built-in)</option>
+                        <option value="dark">Dark Elegance (Built-in)</option>
+                    </select>
+
+                    <label class="small-label">Certificate Theme / Border Color</label>
+                    <input type="color" id="evColor" value="#1e70b8" style="height: 40px; width: 100%; cursor: pointer; padding: 2px;">
+
                     <button type="submit" class="btn-primary">Create Event</button>
                 </form>
             </section>
@@ -66,19 +80,58 @@
             <!-- 2) MY EVENTS -->
             <section class="panel glass">
                 <h3>📋 My Events</h3>
-                <p class="hint">Click an event to see its participants.</p>
+                <p class="hint">Click an event to customize &amp; issue certificates for its participants.</p>
                 <div id="myEvents" class="ev-list"></div>
             </section>
         </div>
 
-        <!-- 3) PARTICIPANTS -->
+        <!-- 3) PARTICIPANTS + CERTIFICATE CUSTOMIZATION (ORGANIZER ONLY) -->
         <section id="partPanel" class="panel glass hidden">
-            <div class="part-head">
+            <div class="part-head" style="flex-wrap: wrap; gap: 12px;">
                 <h3 id="partTitle">👥 Participants</h3>
-                <button id="issueBtn" class="btn-primary">🎓 Generate / Issue Certificates</button>
+
+                <div class="org-cert-controls" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <label for="issueTemplate" style="font-size: 14px; font-weight: 600;">Template:</label>
+                    <select id="issueTemplate" style="padding: 8px; border-radius: 6px;">
+                        <option value="classic">Classic Academic</option>
+                        <option value="modern">Modern Tech</option>
+                        <option value="royal">Royal Gold</option>
+                        <option value="dark">Dark Elegance</option>
+                    </select>
+
+                    <label for="issueColor" style="font-size: 14px; font-weight: 600;">Color:</label>
+                    <input type="color" id="issueColor" value="#1e70b8" title="Customize Certificate Color" style="width: 42px; height: 36px; border: none; cursor: pointer; background: transparent;">
+
+                    <button id="issueBtn" class="btn-primary">🎓 Generate &amp; Send</button>
+                </div>
             </div>
             <div id="partList"></div>
         </section>
+
+        <!-- 4) CUSTOM TEMPLATE UPLOAD + HACKATHON SPONSOR -->
+        <div class="dash-grid" style="margin-top: 20px;">
+            <section class="panel glass">
+                <h3>🎨 Upload Custom Certificate Template</h3>
+                <form id="uploadForm" class="dash-form">
+                    <input type="text" id="tplName" placeholder="Template name (e.g. Hackathon 2026)">
+                    <input type="file" id="tplFile" accept="image/png,image/jpeg">
+                    <small>Use a landscape PNG/JPG background (about 1100 × 780).</small>
+                    <button type="submit" class="btn-primary">Upload Template</button>
+                </form>
+            </section>
+
+            <section class="panel glass">
+                <h3>🤝 Add Hackathon Sponsor</h3>
+                <form id="sponsorForm" class="dash-form">
+                    <input type="text" id="spName" placeholder="Sponsor name">
+                    <input type="text" id="spWebsite" placeholder="Website (https://…)">
+                    <input type="text" id="spDesc" placeholder="Short description">
+                    <select id="spEvent"><option value="">All hackathons</option></select>
+                    <input type="file" id="spLogo" accept="image/*">
+                    <button type="submit" class="btn-primary">Add Sponsor</button>
+                </form>
+            </section>
+        </div>
 
         <div id="dashMsg" class="dash-msg"></div>
     </main>
@@ -90,6 +143,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase-config.js"></script>
     <script src="js/common.js"></script>
-    <script src="js/organizer.js"></script>
+    <script src="js/organizer.js?v=2"></script>
 </body>
 </html>

@@ -1,0 +1,231 @@
+/* ==========================================================
+   certificate.css  -->  STYLES ONLY FOR certificate.html
+   Makes the page look like a real printed certificate.
+   ========================================================== */
+
+.certificate-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 10px 20px 30px;
+}
+
+/* outer decorative border */
+.certificate {
+    background-color: #ffffff;
+    border: 10px solid #2C3E50;
+    border-radius: 6px;
+    padding: 12px;
+    width: 100%;
+    max-width: 850px;
+    box-shadow: 3px 3px 15px rgba(0,0,0,0.15);
+}
+
+/* inner thin golden/blue border */
+.cert-inner-border {
+    border: 2px solid #3498DB;
+    padding: 35px 40px 30px;
+    text-align: center;
+}
+
+.cert-logo {
+    font-size: 45px;
+    margin-bottom: 5px;
+}
+
+.college-name {
+    color: #2C3E50;
+    font-size: 20px;
+    letter-spacing: 0.5px;
+}
+
+.college-sub {
+    color: #777;
+    font-size: 13px;
+    margin-bottom: 25px;
+}
+
+.cert-heading {
+    font-size: 30px;
+    color: #3498DB;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+}
+
+.cert-line {
+    width: 120px;
+    height: 3px;
+    background-color: #2C3E50;
+    margin: 0 auto 25px;
+}
+
+.cert-text {
+    color: #444;
+    font-size: 16px;
+    line-height: 1.7;
+    margin: 8px auto;
+    max-width: 620px;
+}
+
+.cert-text.small {
+    font-size: 14px;
+    color: #777;
+    margin-top: 15px;
+}
+
+.student-name {
+    font-size: 28px;
+    color: #2C3E50;
+    margin: 12px 0;
+    border-bottom: 1px dashed #bbb;
+    display: inline-block;
+    padding: 0 25px 6px;
+}
+
+.event-name, .event-date {
+    color: #2C3E50;
+    font-weight: bold;
+}
+
+/* SIGNATURES */
+.signatures {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 45px;
+    flex-wrap: wrap;
+}
+
+.sign-box {
+    flex: 1;
+    min-width: 180px;
+}
+
+.sign-line {
+    border-top: 1px solid #555;
+    margin-bottom: 6px;
+}
+
+.sign-box p {
+    font-size: 13px;
+    color: #555;
+}
+
+/* CERTIFICATE ID + QR */
+.cert-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.cert-id {
+    font-size: 13px;
+    color: #777;
+    text-align: left;
+}
+
+.cert-id span {
+    color: #2C3E50;
+    font-weight: bold;
+}
+
+/* dummy QR code box (bottom right corner) */
+.qr-placeholder {
+    width: 85px;
+    height: 85px;
+    border: 2px dashed #2C3E50;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #2C3E50;
+    margin-left: auto;
+}
+
+.qr-placeholder span {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.qr-placeholder small {
+    font-size: 9px;
+    color: #777;
+    text-align: center;
+}
+
+/* ACTION BUTTONS BELOW THE CERTIFICATE */
+.cert-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 0 20px 50px;
+}
+
+/* DEMO MESSAGE */
+.cert-msg-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 0 20px;
+}
+
+.cert-msg {
+    display: none;
+    background-color: #e8f8f0;
+    color: #1E8449;
+    border-left: 4px solid #1E8449;
+    padding: 12px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    max-width: 850px;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+/* SMALL SCREENS */
+@media (max-width: 600px) {
+    .cert-inner-border {
+        padding: 20px 15px;
+    }
+
+    .cert-heading {
+        font-size: 20px;
+        letter-spacing: 1px;
+    }
+
+    .student-name {
+        font-size: 22px;
+    }
+}
+
+/* MY CERTIFICATE LIST + QR */
+.cert-list { max-width: 850px; width: 100%; margin-bottom: 15px; }
+.cert-list a { display: block; background: #fff; padding: 10px 14px; border-radius: 6px; margin-bottom: 8px; color: #1F2A44; text-decoration: none; box-shadow: 0 2px 6px rgba(0,0,0,.08); }
+.qr-box { text-align: center; font-size: 11px; }
+.qr-box img, .qr-box canvas { width: 90px; height: 90px; }
+@media print {
+  nav, footer, .page-title, .cert-actions, .cert-msg-wrapper { display: none !important; }
+}
+
+/* TEMPLATE PICKER */
+.template-panel { background: #fff; padding: 16px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,.08); max-width: 850px; width: 100%; margin-bottom: 15px; }
+.template-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+.template-list button { padding: 8px 14px; border: 2px solid #ccd; border-radius: 6px; background: #f5f7fb; cursor: pointer; }
+.template-list button.active { border-color: #2563eb; background: #e6efff; }
+.upload-form { display: flex; flex-direction: column; gap: 8px; border-top: 1px solid #eee; padding-top: 10px; }
+.upload-form.hidden, .hidden { display: none !important; }
+/* built-in styles */
+.certificate.tpl-modern { background: linear-gradient(135deg,#eef4ff,#fff); }
+.certificate.tpl-modern .cert-inner-border { border: 3px solid #2563eb; border-radius: 14px; }
+.certificate.tpl-royal { background: #fffaf0; }
+.certificate.tpl-royal .cert-inner-border { border: 6px double #b8860b; }
+.certificate.tpl-royal .cert-heading { color: #8b6508; }
+.certificate.tpl-dark { background: #1F2A44; }
+.certificate.tpl-dark .cert-inner-border { border: 2px solid #f5c542; color: #fff; }
+.certificate.tpl-dark * { color: #fff !important; }
+.certificate.tpl-dark .qr-box div { background: #fff; padding: 4px; display: inline-block; }
+.certificate.tpl-custom { background-size: cover; background-position: center; }
+.certificate.tpl-custom .cert-inner-border { border-color: transparent; background: transparent; }

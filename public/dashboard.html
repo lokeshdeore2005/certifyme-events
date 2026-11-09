@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard | Smart Event Portal</title>
+    <meta name="description" content="Your events, registrations and certificates in one place.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body class="dash-body">
+
+    <!-- NAVBAR -->
+    <nav>
+        <div class="logo">🎓 Event Portal</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="events.html">Events</a>
+            <a href="certificate.html">Certificate</a>
+            <a href="dashboard.html" class="active">Dashboard</a>
+        </div>
+    </nav>
+
+    <!-- shown until we know the user is logged in -->
+    <p id="loading" class="dash-loading">Checking your login…</p>
+
+    <main id="dashMain" class="dash-main hidden">
+
+        <!-- GREETING BANNER -->
+        <section class="banner glass">
+            <div>
+                <p class="banner-small" id="todayText"></p>
+                <h1 id="greeting">Hello 👋</h1>
+                <p id="roleText"></p>
+            </div>
+            <div class="banner-actions">
+                <a href="events.html" class="btn-primary">Explore Events</a>
+                <button id="logoutBtn" class="btn-ghost">Logout</button>
+            </div>
+        </section>
+
+        <!-- STAT CARDS -->
+        <section class="stats">
+            <div class="stat glass"><span>📝</span><b id="statRegs">0</b><p>My Registrations</p></div>
+            <div class="stat glass"><span>✅</span><b id="statAttended">0</b><p>Events Attended</p></div>
+            <div class="stat glass"><span>🎓</span><b id="statCerts">0</b><p>Certificates Earned</p></div>
+            <div class="stat glass"><span>📅</span><b id="statUpcoming">0</b><p>Upcoming Events</p></div>
+        </section>
+
+        <div class="dash-grid">
+            <!-- MY REGISTERED EVENTS (STRICT READ-ONLY) -->
+            <section class="panel glass">
+                <h3>📌 My Registered Events</h3>
+                <div id="myRegs" class="ev-list"></div>
+            </section>
+
+            <!-- MY ISSUED CERTIFICATES (VIEW / DOWNLOAD ONLY) -->
+            <section class="panel glass">
+                <h3>🎓 My Issued Certificates</h3>
+                <div id="myCerts" class="ev-list"></div>
+                <a href="certificate.html" class="link-more">View / Download Certificates →</a>
+            </section>
+        </div>
+
+        <!-- UPCOMING EVENTS -->
+        <section class="panel glass" style="margin-top: 20px;">
+            <h3>🔥 Upcoming Events</h3>
+            <div id="upcomingList" class="ev-list"></div>
+        </section>
+
+        <div id="dashMsg" class="dash-msg"></div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2026 Smart Event Portal | 👁️ Website Views: <span id="visitorCount">…</span></p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
